@@ -3,7 +3,12 @@
 
 # Ignore subdirectories
 */
-# !/
+!ubi9-ib/
+!ubi8-ib/
+!ubi9-minimal-ib/
+!ubi8-minimal-ib/
+!ubi9-micro-ib/
+!ubi8-micro-ib/
 
 # Ignore Files
 *.tgz

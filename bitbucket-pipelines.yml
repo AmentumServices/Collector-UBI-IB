@@ -7,23 +7,21 @@ image: atlassian/default-image:4
 
 pipelines:
   default:
-    # - parallel:
-    #   - step:
-    #       name: 'Bundle Repo1 code base for UBI-IB'
-    #       script:
-    #         - BUNDLE="UBI-IB"
-    #         - DATE=`date '+%Y%m%d-%H%M'`
-    #         - git submodule update --init --recursive
-    #         - cd $BUNDLE
-    #         - git bundle create --progress ../$BUNDLE_$DATE.bundle --all
-    #         - cd ..       
-    #         - ls -alht *
-    #         - |
-    #           curl -X POST \
-    #             "https://${BITBUCKET_USERNAME}:${BITBUCKET_APP_PASSWORD}@api.bitbucket.org/2.0/repositories/${BITBUCKET_REPO_OWNER}/${BITBUCKET_REPO_SLUG}/downloads" \
-    #             --form files=@"$BUNDLE_$DATE.bundle"
-    #       artifacts: # defining the artifacts to be passed to each future step.
-    #         - $BUNDLE_$DATE.bundle
+    - parallel:
+      - step:
+          name: 'Bundle Repo1 code base for UBI-IB'
+          script:
+            - BUNDLE="UBI-IB"
+            - DATE=`date '+%Y%m%d-%H%M'`
+            - git submodule update --init --recursive
+            - git bundle create --progress ../$BUNDLE_$DATE.bundle --all
+            - ls -alht *
+            - |
+              curl -X POST \
+                "https://${BITBUCKET_USERNAME}:${BITBUCKET_APP_PASSWORD}@api.bitbucket.org/2.0/repositories/${BITBUCKET_REPO_OWNER}/${BITBUCKET_REPO_SLUG}/downloads" \
+                --form files=@"$BUNDLE_$DATE.bundle"
+          artifacts: # defining the artifacts to be passed to each future step.
+            - $BUNDLE_$DATE.bundle
       - step:
           name: 'Skopeo Container Images'
           script:

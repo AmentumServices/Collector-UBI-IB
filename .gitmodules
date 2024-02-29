@@ -1,0 +1,18 @@
+[submodule "ubi9-ib"]
+	path = ubi9-ib
+	url = https://repo1.dso.mil/dsop/redhat/ubi/9.x/ubi9
+[submodule "ubi9-minimal-ib"]
+	path = ubi9-minimal-ib
+	url = https://repo1.dso.mil/dsop/redhat/ubi/9.x/ubi9-minimal
+[submodule "ubi8-minimal-ib"]
+	path = ubi8-minimal-ib
+	url = https://repo1.dso.mil/dsop/redhat/ubi/8.x/ubi8-minimal
+[submodule "ubi8-ib"]
+	path = ubi8-ib
+	url = https://repo1.dso.mil/dsop/redhat/ubi/8.x/ubi8
+[submodule "ubi8-micro-ib"]
+	path = ubi8-micro-ib
+	url = https://repo1.dso.mil/dsop/redhat/ubi/8.x/ubi8-micro
+[submodule "ubi9-micro-ib"]
+	path = ubi9-micro-ib
+	url = https://repo1.dso.mil/dsop/redhat/ubi/9.x/ubi9-micro
