@@ -31,7 +31,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: TARchive of Images
-          path: ${{ vars.COLLECTOR }}--${{ steps.date.outputs.date }}.tgz
+          path: ${{ vars.COLLECTOR }}-${{ steps.date.outputs.date }}.tgz
       - name: Publish Artifact
         run: |
           curl -L \
@@ -66,7 +66,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: TARchive of Code
-          path: ${{ vars.COLLECTOR }}_-${{ steps.date.outputs.date }}.bundle
+          path: ${{ vars.COLLECTOR }}-${{ steps.date.outputs.date }}.bundle
       - name: Publish Artifact
         run: |
           curl -L \
