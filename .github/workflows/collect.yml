@@ -25,8 +25,8 @@ jobs:
           skopeo sync \
               --src-creds=${{ vars.REGISTRY_USER }}:${{ secrets.REGISTRY_TOKEN }} \
               --src yaml --dest dir ${{ vars.COLLECTOR }}.yml ${{ vars.COLLECTOR }}
-          tar -cvzf ${{ vars.COLLECTOR }}--${{ steps.date.outputs.date }}.tgz ${{ vars.COLLECTOR }}
-          ls -alh ${{ vars.COLLECTOR }}--${{ steps.date.outputs.date }}.tgz
+          tar -cvzf ${{ vars.COLLECTOR }}-${{ steps.date.outputs.date }}.tgz ${{ vars.COLLECTOR }}
+          ls -alh ${{ vars.COLLECTOR }}-${{ steps.date.outputs.date }}.tgz
       - name: Archive artifacts
         uses: actions/upload-artifact@v4
         with:
