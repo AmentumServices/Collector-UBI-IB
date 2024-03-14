@@ -1,0 +1,29 @@
+name: Skopeo UBI-IB collector
+run-name: ${{ github.actor }} is Collecting 🚀
+on: [push]
+jobs:
+  Skopeo:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
+      - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
+      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
+      - name: Check out repository code
+        uses: actions/checkout@v4
+      - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
+      - run: echo "🖥️ The workflow is now ready to test your code on the runner."
+      - name: Main Skopeo Script
+        run: |
+          ls -lah ${{ github.workspace }}
+          IMAGE="UBI-IB"
+          DATE=`date '+%Y%m%d-%H%M'`
+          # install deps
+          apt-get update && apt-get install -y skopeo
+          skopeo login registry1.dso.mil -u ${{ vars.REGISTRY_USER }} -p ${{ secrets.REGISTRY_TOKEN }}
+          skopeo sync \
+              --src-creds=${{ vars.REGISTRY_USER }}:${{ secrets.REGISTRY_TOKEN }} \
+              --src yaml --dest dir $IMAGE.yml $IMAGE
+          tar -cvzf $IMAGE-$DATE.tgz $IMAGE
+          ls -alh $IMAGE-$DATE.tgz
+
+      - run: echo "🍏 This job's status is ${{ job.status }}."
