@@ -24,6 +24,11 @@ jobs:
               --src yaml --dest dir ${{ vars.COLLECTOR }}.yml ${{ vars.COLLECTOR }}
           tar -cvzf ${{ vars.COLLECTOR }}-$DATE.tgz ${{ vars.COLLECTOR }}
           ls -alh ${{ vars.COLLECTOR }}-$DATE.tgz
+      - name: Archive artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: TARchive of Images
+          path: ${{ vars.COLLECTOR }}*.tgz
 
       - run: echo "🍏 This job's status is ${{ job.status }}."
   Code:
@@ -42,3 +47,8 @@ jobs:
             git submodule update --init --recursive
             git bundle create --progress ${{ vars.COLLECTOR }}_$DATE.bundle --all
             ls -alht *
+      - name: Archive artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: TARchive of Code
+          path: ${{ vars.COLLECTOR }}*.bundle
