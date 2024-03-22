@@ -30,7 +30,7 @@ jobs:
       - name: Archive artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ vars.COLLECTOR }}-${{ steps.date.outputs.date }}.
+          name: ${{ vars.COLLECTOR }}-${{ steps.date.outputs.date }}.tgz
           path: ${{ vars.COLLECTOR }}-${{ steps.date.outputs.date }}.tgz
       - name: Publish Artifact
         run: |
