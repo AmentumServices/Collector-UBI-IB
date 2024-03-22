@@ -30,7 +30,7 @@ jobs:
       - name: Archive artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: TARchive of Images
+          name: ${{ vars.COLLECTOR }}-${{ steps.date.outputs.date }}.
           path: ${{ vars.COLLECTOR }}-${{ steps.date.outputs.date }}.tgz
       - name: Publish Artifact
         run: |
@@ -65,7 +65,7 @@ jobs:
       - name: Archive artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: TARchive of Code
+          name: ${{ vars.COLLECTOR }}-${{ steps.date.outputs.date }}.bundle
           path: ${{ vars.COLLECTOR }}-${{ steps.date.outputs.date }}.bundle
       - name: Publish Artifact
         run: |
