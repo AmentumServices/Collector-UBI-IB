@@ -64,11 +64,17 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v4
         
-      - name: Update Submodules if needed
+      - name: Setup Git
         run: |
           git config user.name "$(git log -n 1 --pretty=format:%an)"
           git config user.email "$(git log -n 1 --pretty=format:%ae)"
+          
+      - name: Update Submodules if needed
+        shell: bash
+        run: |
           git submodule update --init --recursive --remote
+          git commit -am "${{ needs.Date.outputs.Date }}: Update Submodules"
+          git push
 
       - name: Bundle Repo1 code base for ${{ vars.COLLECTOR }}
         run: |
