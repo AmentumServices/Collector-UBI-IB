@@ -100,7 +100,7 @@ jobs:
           merge-multiple: true
        
       - name: Show Artifacts
-        run: ls -alh
+        run: ls -alh ${{ vars.COLLECTOR }}-*.*
         
       - name: Set up git
         run: |
