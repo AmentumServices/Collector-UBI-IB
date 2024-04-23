@@ -99,9 +99,13 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v4
         
-      - name: Get current date
-        id: DATE
-        run: echo "DATE=$(date '+%Y%m%d-%H%M')" >> $GITHUB_OUTPUT
+      - name: Download Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          merge-multiple: true
+       
+      - name: Show Artifacts
+        run: ls -alh
         
       - name: Set up git
         run: |
@@ -124,5 +128,5 @@ jobs:
           tag_name: ${{ steps.date.outputs.date }}
           make_latest: true
           files: |
-            ${{ vars.COLLECTOR }}-${{ steps.date.outputs.date }}.bundle
-            ${{ vars.COLLECTOR }}-${{ steps.date.outputs.date }}.tgz
+            *.bundle
+            *.tgz
