@@ -1,6 +1,11 @@
 name: UBI IB Collector
 run-name: ${{ github.actor }} is Collecting 🚀
-on: [push]
+on: 
+  push:
+    branches:
+      - main
+  schedule:
+    - cron: '0 0 * * 1' # Update weekly on Monday Midnight
 jobs:
   Skopeo:
     runs-on: ubuntu-latest
@@ -77,3 +82,33 @@ jobs:
             https://api.github.com/repos/${{ github.repository }}/releases/assets/${{ vars.COLLECTOR }}-${{ steps.date.outputs.date }}.bundle \
             -d '{"name":"${{ vars.COLLECTOR }}-${{ steps.date.outputs.date }}.bundle","label":"GIT Bundle"}'
             env
+
+  Release:
+    runs-on: ubuntu-latest
+    needs: [Code, Skopeo]
+    steps:
+      - name: Set up git
+        run: |
+          git config user.name "$(git log -n 1 --pretty=format:%an)"
+          git config user.email "$(git log -n 1 --pretty=format:%ae)"
+          
+      - name: Create tag
+        uses: rickstaa/action-create-tag@v1
+        id: tag_create
+        with:
+          tag: ${{ steps.date.outputs.date }}
+          github_token: ${{secrets.GITHUB_TOKEN}}
+          tag_exists_error: false
+          message: "Release for ${{ steps.date.outputs.date }} run"
+          
+      - name: Create Release
+        id: create_release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.date.outputs.date }}
+          make_latest: true
+          files: |
+            ${{ vars.COLLECTOR }}-${{ steps.date.outputs.date }}.bundle
+            ${{ vars.COLLECTOR }}-${{ steps.date.outputs.date }}.tgz
+            
+      
