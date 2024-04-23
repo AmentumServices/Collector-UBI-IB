@@ -2,8 +2,7 @@
 .vagrant*
 
 # Ignore subdirectories
-*/
-!.github/
+!.github/*
 !ubi9-ib/
 !ubi8-ib/
 !ubi9-minimal-ib/
