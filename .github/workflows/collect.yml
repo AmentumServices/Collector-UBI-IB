@@ -27,9 +27,8 @@ jobs:
         
       - name: Install Skopeo
         run: |
-          set +e
-          apt-get update 
-          apt-get install -y skopeo
+          sudo apt-get update -y
+          sudo apt-get install -y skopeo
     
       - name: Skopeo Login
         run: |
