@@ -71,11 +71,8 @@ jobs:
           
       - name: Update Submodules if needed
         shell: bash
-        run: |
-          git submodule update --init --recursive --remote
-          git commit -am "${{ needs.Date.outputs.Date }}: Update Submodules"
-          git push
-
+        run: git submodule update --init --recursive --remote
+  
       - name: Bundle Repo1 code base for ${{ vars.COLLECTOR }}
         run: |
             git bundle create --progress ${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}.bundle --all
