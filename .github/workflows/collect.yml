@@ -26,7 +26,10 @@ jobs:
         uses: actions/checkout@v4
         
       - name: Install Skopeo
-        run: apt-get update && apt-get install -y skopeo
+        run: |
+          set +e
+          apt-get update 
+          apt-get install -y skopeo
     
       - name: Skopeo Login
         run: |
