@@ -63,8 +63,8 @@ jobs:
       - name: Upload bundle
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ vars.COLLECTOR }}-${{ steps.Date.outputs.Date }}.bundle
-          path: ${{ vars.COLLECTOR }}-${{ steps.Date.outputs.Date }}.bundle
+          name: ${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}.bundle
+          path: ${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}.bundle
 
   Release:
     runs-on: ubuntu-latest
@@ -105,5 +105,5 @@ jobs:
           tag_name: ${{ needs.Date.outputs.Date }}
           make_latest: true
           files: |
-            *.bundle
-            *.tgz
+            ${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}.bundle
+            ${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}.tgz
