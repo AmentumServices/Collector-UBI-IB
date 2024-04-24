@@ -16,31 +16,32 @@ jobs:
          id: DATE
          run: |
            echo "DATE=$(date '+%Y%m%d-%H%M')" >> $GITHUB_OUTPUT
-           echo -e "\n$GITHUB_OUTPUT"
-         
+           echo -e "\n$GITHUB_OUTPUT\n"
+           cat $GITHUB_OUTPUT
+
   Skopeo:
     needs: [Date]
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository code
         uses: actions/checkout@v4
-        
+
       - name: Install Skopeo
         run: |
           sudo apt-get update -y
           sudo apt-get install -y skopeo
-    
+
       - name: Skopeo Login
         run: |
           skopeo login registry1.dso.mil -u ${{ vars.REGISTRY_USER }} -p ${{ secrets.REGISTRY_TOKEN }}
           skopeo login docker.io -u ${{ vars.DOCKERHUB_USER }} -p ${{ secrets.DOCKERHUB_TOKEN }}
-      
+
       - name: Run Skopeo Sync
         run: |
           skopeo sync \
             --src-creds=${{ vars.REGISTRY_USER }}:${{ secrets.REGISTRY_TOKEN }} \
             --src yaml --dest dir ${{ vars.COLLECTOR }}.yml ${{ vars.COLLECTOR }}
-              
+
       - name: TARchive Skopeo Output
         run: |  
           tar -cvzf ${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}.tgz ${{ vars.COLLECTOR }}
@@ -50,7 +51,7 @@ jobs:
         run: |
           echo "Directory Contents"
           ls -lahR
-      
+
       - name: Upload TARchive
         uses: actions/upload-artifact@v4
         with:
@@ -63,21 +64,21 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@v4
-        
+
       - name: Setup Git
         run: |
           git config user.name "$(git log -n 1 --pretty=format:%an)"
           git config user.email "$(git log -n 1 --pretty=format:%ae)"
-          
+
       - name: Update Submodules if needed
         shell: bash
         run: git submodule update --init --recursive --remote
-  
+
       - name: Bundle Repo1 code base for ${{ vars.COLLECTOR }}
         run: |
             git bundle create --progress ${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}.bundle --all
             ls -alht *
-            
+
       - name: Upload bundle
         uses: actions/upload-artifact@v4
         with:
@@ -93,20 +94,20 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@v4
-        
+
       - name: Download Artifacts
         uses: actions/download-artifact@v4
         with:
           merge-multiple: true
-       
+
       - name: Show Artifacts
         run: ls -alh ${{ vars.COLLECTOR }}-*.*
-        
+
       - name: Set up git
         run: |
           git config user.name "$(git log -n 1 --pretty=format:%an)"
           git config user.email "$(git log -n 1 --pretty=format:%ae)"
-          
+
       - name: Create tag
         uses: rickstaa/action-create-tag@v1
         id: tag_create
@@ -115,7 +116,7 @@ jobs:
           github_token: ${{secrets.GITHUB_TOKEN}}
           tag_exists_error: false
           message: "Release for ${{ needs.Date.outputs.Date }} run"
-          
+
       - name: Create Release
         id: create_release
         uses: softprops/action-gh-release@v2
