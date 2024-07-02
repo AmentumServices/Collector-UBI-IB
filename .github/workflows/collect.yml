@@ -189,7 +189,6 @@ jobs:
         run: |
           mkisofs -J -R -v -T -l \
             -V '${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}' \
-            -reproducible-date=${{ needs.Date.outputs.Date }} \
             -A '${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}' \
             -o ${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}.iso \
             ${{ vars.COLLECTOR }}-*.*
