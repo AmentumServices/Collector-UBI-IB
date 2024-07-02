@@ -192,7 +192,7 @@ jobs:
             -reproducible-date=${{ needs.Date.outputs.Date }} \
             -A '${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}' \
             -o ${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}.iso \
-            "${{ vars.COLLECTOR }}-*.*"
+            ${{ vars.COLLECTOR }}-*.*
             
       - name: Send ISO to Sharepoint
         uses: JacobsFederal/sharepoint-file-upload-action@pappasjfed-patch-1
