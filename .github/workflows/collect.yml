@@ -7,7 +7,7 @@ on:
   schedule:
     - cron: "0 0 * * 1" # Update weekly on Monday Midnight
   workflow_dispatch:
-    
+
 jobs:
   Date:
     runs-on: ubuntu-latest
@@ -95,6 +95,9 @@ jobs:
       contents: write
       pull-requests: read
     steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+
       - name: Install mkisofs
         run: |
           sudo apt-get update -y
@@ -126,7 +129,7 @@ jobs:
             -V '${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}' \
             -A '${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}' \
             -o ${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}.iso \
-            ${{ vars.COLLECTOR }}-*.*
+            ${{ vars.COLLECTOR }}-*.* *.md
 
       - name: Implant MD5 sum into iso
         run: implantisomd5 ${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}.iso
@@ -145,6 +148,7 @@ jobs:
         with:
           name: ${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}.iso
           path: ${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}.iso
+          if-no-files-found: error
 
       - name: Upload ISO Hash
         uses: actions/upload-artifact@v4
